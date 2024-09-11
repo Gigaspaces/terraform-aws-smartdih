@@ -1,0 +1,79 @@
+manager:
+  nodeSelector:
+    gs-nodegroup: worker
+  security:
+    nodeSelector:
+      gs-nodegroup: worker
+
+operator:
+  nodeSelector:
+    gs-nodegroup: worker
+
+spacedeck:
+  nodeSelector:
+    gs-nodegroup: worker
+
+grafana:
+  nodeSelector:
+    gs-nodegroup: worker
+
+influxdb:
+  nodeSelector:
+    gs-nodegroup: worker
+
+di:
+  diMdm:
+    nodeSelector:
+      gs-nodegroup: worker
+  diManager:
+    nodeSelector:
+      gs-nodegroup: worker
+  diOperator:
+    nodeSelector:
+      gs-nodegroup: worker
+
+flink:
+  nodeSelector:
+    gs-nodegroup: worker
+
+kafka:
+  controller:
+    nodeSelector:
+      gs-nodegroup: worker
+  broker:
+    nodeSelector:
+      gs-nodegroup: worker
+
+zookeeper:
+  nodeSelector:
+    gs-nodegroup: worker
+
+iidrKafka:
+  nodeSelector:
+    gs-nodegroup: worker
+
+iidrAS:
+  nodeSelector:
+    gs-nodegroup: worker
+
+redpanda:
+  nodeSelector:
+    gs-nodegroup: worker
+
+diSubscriptionManager:
+  nodeSelector:
+    gs-nodegroup: worker
+
+xap-dgw:
+  nodeSelector:
+    enabled: true
+    selector:
+      gs-nodegroup: worker
+
+service-creator:
+  nodeSelector:
+    gs-nodegroup: worker
+
+service-operator:
+  nodeSelector:
+    gs-nodegroup: worker

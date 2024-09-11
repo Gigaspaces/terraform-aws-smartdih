@@ -1,0 +1,81 @@
+---
+exclude: '^remote_state'
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      # Git style
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-vcs-permalinks
+      - id: forbid-new-submodules
+
+      # Common errors
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: check-executables-have-shebangs
+
+      # Cross platform
+      - id: check-case-conflict
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.83.6
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_docs
+      - id: terraform_validate
+        exclude: "^[^/]+$"
+        args:
+          - --hook-config=--retry-once-with-cleanup=true
+          - --tf-init-args=-backend=false
+      - id: terraform_checkov
+        args: [
+            "--args=-d .",
+            "--args=--quiet",
+            "--args=--skip-path remote_state",
+            "--args=--skip-check CKV2_AWS_3", # Ensure GuardDuty is enabled to specific org/region
+            "--args=--skip-check CKV_AWS_8", # Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted
+            "--args=--skip-check CKV2_AWS_11", # Ensure VPC flow logging is enabled in all VPCs
+            "--args=--skip-check CKV2_AWS_12", # Ensure the default security group of every VPC restricts all traffic
+            "--args=--skip-check CKV2_AWS_14", # Ensure that IAM groups includes at least one IAM user
+            "--args=--skip-check CKV2_AWS_19", # Ensure that all EIP addresses allocated to a VPC are attached to EC2 instances
+            "--args=--skip-check CKV2_AWS_21", # Ensure that all IAM users are members of at least one IAM group.
+            "--args=--skip-check CKV_AWS_25", # Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389.
+            "--args=--skip-check CKV_AWS_26", # Ensure all data stored in the SNS topic is encrypted
+            "--args=--skip-check CKV2_AWS_38", # Ensure Domain Name System Security Extensions (DNSSEC) signing is enabled for Amazon Route 53 public hosted zones
+            "--args=--skip-check CKV2_AWS_39", # Ensure Domain Name System (DNS) query logging is enabled for Amazon Route 53 hosted zones"
+            "--args=--skip-check CKV2_AWS_41", # Ensure an IAM role is attached to EC2 instance
+            "--args=--skip-check CKV_AWS_18", # Ensure the S3 bucket has access logging enabled
+            "--args=--skip-check CKV_AWS_21", # Ensure all data stored in the S3 bucket have versioning enabled
+            "--args=--skip-check CKV_AWS_79", # Ensure Instance Metadata Service Version 1 is not enabled
+            "--args=--skip-check CKV_AWS_109", # Ensure IAM policies does not allow permissions management / resource exposure without constraints
+            "--args=--skip-check CKV_AWS_111", # Ensure IAM policies does not allow write access without constraints
+            "--args=--skip-check CKV_AWS_124", # Ensure that CloudFormation stacks are sending event notifications to an SNS topic
+            "--args=--skip-check CKV_AWS_126", # Ensure that detailed monitoring is enabled for EC2 instances
+            "--args=--skip-check CKV_AWS_135", # Ensure that EC2 is EBS optimized
+            "--args=--skip-check CKV_AWS_144", # Ensure that S3 bucket has cross-region replication enabled
+            "--args=--skip-check CKV_AWS_145", # Ensure that S3 buckets are encrypted with KMS by default
+            "--args=--skip-check CKV_AWS_149", # Ensure that Secrets Manager secret is encrypted using KMS CMK
+            "--args=--skip-check CKV_AWS_252", # Ensure CloudTrail defines an SNS Topic
+            "--args=--skip-check CKV_AWS_273", # Ensure access is controlled through SSO and not AWS IAM defined users
+            "--args=--skip-check CKV2_AWS_5", # Ensure that Security Groups are attached to another resource
+            "--args=--skip-check CKV_AWS_66", # Ensure that CloudWatch Log Group specifies retention days
+            "--args=--skip-check CKV_AWS_158", # Ensure that CloudWatch Log Group is encrypted by KMS
+            "--args=--skip-check CKV_AWS_28", # Ensure Dynamodb point in time recovery (backup) is enabled
+            "--args=--skip-check CKV_AWS_119", # Ensure DynamoDB Tables are encrypted using a KMS Customer Managed CMK
+            "--args=--skip-check CKV_TF_1", # Ensure Terraform module sources use a commit hash
+          ]
+      - id: terraform_tflint
+        args:
+          - >
+            --args=--disable-rule=terraform_module_pinned_source
+      - id: terraform_tfsec
+        args:
+          - >
+            --args=--exclude-downloaded-modules
+            -e aws-s3-encryption-customer-key,aws-s3-enable-bucket-logging,aws-s3-enable-versioning,aws-iam-enforce-group-mfa,aws-ssm-secret-use-customer-key,aws-cloudwatch-log-group-customer-key,aws-ec2-enforce-http-token-imds,aws-ec2-no-public-egress-sgr,aws-ec2-no-public-ingress-sgr,aws-ec2-require-vpc-flow-logs-for-all-vpcs,aws-dynamodb-enable-at-rest-encryption,aws-dynamodb-enable-recovery,aws-dynamodb-table-customer-key,google-compute-no-public-ingress

@@ -1,0 +1,16 @@
+installCRDs: true
+
+nodeSelector:
+  gs-nodegroup: generic
+
+webhook:
+  nodeSelector:
+    gs-nodegroup: generic
+
+cainjector:
+  nodeSelector:
+    gs-nodegroup: generic
+
+startupapicheck:
+  nodeSelector:
+    gs-nodegroup: generic

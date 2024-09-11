@@ -1,0 +1,65 @@
+controller:
+  electionID: ${ingress_class}-controller-leader
+  ingressClassResource:
+    name: ${ingress_class}
+    enabled: true
+    default: ${default}
+    controllerValue: "k8s.io/ingress-${ingress_class}"
+  ingressClass: ${ingress_class}
+
+  tolerations:
+    - key: dedicated
+      operator: Equal
+      value: ingress
+      effect: NoSchedule
+  admissionWebhooks:
+    tolerations:
+      patch:
+        - key: dedicated
+          operator: Equal
+          value: ingress
+          effect: NoSchedule
+  # hostPort:
+  #   enabled: true
+  nodeSelector:
+    gs-nodegroup: ingress
+  replicaCount: 2
+  service:
+    type: LoadBalancer
+    externalTrafficPolicy: Local
+    enableHttp: false
+    targetPorts:
+      https: 80
+    # enableHttps: false
+    # httpsPort:
+    #   targetPort: http
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+      service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: 3600
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: true
+      service.beta.kubernetes.io/aws-load-balancer-type: nlb
+      service.beta.kubernetes.io/aws-load-balancer-internal: true
+      service.beta.kubernetes.io/aws-load-balancer-scheme: internal
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
+      service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "${lb_tags}"
+      service.beta.kubernetes.io/aws-load-balancer-target-node-labels: "${nodegroup_labels}"
+      service.beta.kubernetes.io/aws-load-balancer-subnets: ${load_balancer_subnets}
+      service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: "preserve_client_ip.enabled=true"
+      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: ${ingress_cert}
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+      service.beta.kubernetes.io/aws-load-balancer-healthcheck-success-codes: "200-399"
+      service.beta.kubernetes.io/aws-load-balancer-healthcheck-interval: "30"
+      service.beta.kubernetes.io/load-balancer-source-ranges: ${allowed_cidr_blocks}
+
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - ingress-nginx
+        topologyKey: kubernetes.io/hostname

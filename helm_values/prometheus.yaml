@@ -1,0 +1,24 @@
+alertmanager:
+  enabled: false
+
+grafana:
+  enabled: true
+
+kubelet:
+  enabled: true
+
+nodeExporter:
+  enabled: true
+
+prometheusOperator:
+  nodeSelector:
+    gs-nodegroup: generic
+
+kube-state-metrics:
+  nodeSelector:
+    gs-nodegroup: generic
+
+prometheus:
+  prometheusSpec:
+    nodeSelector:
+      gs-nodegroup: generic

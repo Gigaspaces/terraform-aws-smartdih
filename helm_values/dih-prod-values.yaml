@@ -1,0 +1,155 @@
+
+di:
+  diMdm:
+    resources:
+      requests:
+        memory: "1000Mi"
+        cpu: "250m"
+      limits:
+        memory: "2000Mi"
+        # cpu: "750m"
+  diManager:
+    resources:
+      requests:
+        memory: "1000Mi"
+        cpu: "250m"
+      limits:
+        memory: "2000Mi"
+        # cpu: "750m"
+  diOperator:
+    resources:
+      requests:
+        memory: "20Mi"
+        cpu: "20m"
+      limits:
+        memory: "40Mi"
+        # cpu: "20m"
+
+diSubscriptionManager:
+  resources:
+    requests:
+      memory: "2000Mi"
+      cpu: "250m"
+    limits:
+      memory: "3000Mi"
+      # cpu: "750m"
+
+dgw:
+  resources:
+    requests:
+      memory: "1000Mi"
+      cpu: "250m"
+    limits:
+      memory: "2000Mi"
+
+
+grafana:
+  resources:
+    requests:
+      memory: "400Mi"
+      cpu: "250m"
+    limits:
+      memory: "800Mi"
+      # cpu: "750m"
+
+iidrKafka:
+  resources:
+    requests:
+      memory: "2000Mi"
+      cpu: "250m"
+    limits:
+      memory: "3000Mi"
+      # cpu: "750m"
+
+influxdb:
+  resources:
+    requests:
+      memory: "2000Mi"
+      cpu: "250m"
+    limits:
+      memory: "2000Mi"
+      # cpu: "750m"
+
+kafka:
+  resources:
+    requests:
+      memory: "3000Mi"
+      cpu: "250m"
+    limits:
+      memory: "6000Mi"
+      # cpu: "750m"
+
+
+iidrAS:
+  resources:
+    requests:
+      memory: "400Mi"
+      cpu: "250m"
+    limits:
+      memory: "800Mi"
+      # cpu: "750m"
+
+redpanda:
+  resources:
+    requests:
+      memory: "200Mi"
+      cpu: "20m"
+    limits:
+      memory: "200Mi"
+      # cpu: "40m"
+
+
+spacedeck:
+  resources:
+    requests:
+      memory: "1000Mi"
+      cpu: "250m"
+    limits:
+      memory: "2000Mi"
+      # cpu: "750m"
+
+manager:
+  resources:
+    requests:
+      memory: "2000Mi"
+      cpu: "250m"
+    limits:
+      memory: "2400Mi"
+      # cpu: "750m"
+
+operator:
+  resources:
+    requests:
+      memory: "1000Mi"
+      cpu: "250m"
+    limits:
+      memory: "1700Mi"
+      # cpu: "750m"
+
+service-creator:
+  resources:
+    requests:
+      memory: "1000Mi"
+      cpu: "250m"
+    limits:
+      memory: "1700Mi"
+      # cpu: "750m"
+
+service-operator:
+  resources:
+    requests:
+      memory: "1000Mi"
+      cpu: "250m"
+    limits:
+      memory: "1700Mi"
+      # cpu: "750m"
+
+flink:
+  jobmanager:
+    memoryRequestSize: 2.2G
+    memoryProcessSize: 2000m #jobmanager.memory.process.size : Total Process Memory size for the JobManager
+    jvmMetaspaceSize: 500m
+  taskmanager:
+    memoryRequestSize: 2.2G
+    memoryProcessSize: 2000m #taskmanager.memory.process.size : Total Process Memory size for the TaskExecutors
+    jvmMetaspaceSize: 500m

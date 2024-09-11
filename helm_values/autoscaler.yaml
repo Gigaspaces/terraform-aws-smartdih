@@ -1,0 +1,2 @@
+nodeSelector:
+  gs-nodegroup: generic
